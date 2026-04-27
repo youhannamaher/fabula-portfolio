@@ -16,15 +16,15 @@ const Hero: React.FC = () => {
           Portfolio de Pratique
         </span>
         
-        <h1 className="text-6xl md:text-8xl leading-tight mb-8">
+        <h1 className="text-5xl md:text-8xl leading-tight mb-6 md:mb-8">
           {profile.name}
         </h1>
         
-        <p className="text-xl md:text-2xl text-gray-600 mb-10 leading-relaxed font-light">
+        <p className="text-lg md:text-2xl text-gray-600 mb-6 md:mb-10 leading-relaxed font-light">
           {profile.title}
         </p>
         
-        <p className="text-lg text-gray-500 mb-12 max-w-2xl border-l-2 border-accent/30 pl-6 italic">
+        <p className="text-base md:text-lg text-gray-500 mb-8 md:mb-12 max-w-2xl border-l-2 border-accent/30 pl-6 italic">
           “I create visual stories that connect brands, people, and emotions through video editing, content production, and digital storytelling.”
         </p>
         

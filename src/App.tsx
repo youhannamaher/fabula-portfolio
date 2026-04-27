@@ -20,7 +20,7 @@ const App: React.FC = () => {
       {/* Desktop Navigation */}
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 pt-24 pb-32 space-y-32">
+      <main className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 pt-16 md:pt-24 pb-16 md:pb-32 space-y-16 md:space-y-32">
         <section id="hero">
           <Hero />
         </section>

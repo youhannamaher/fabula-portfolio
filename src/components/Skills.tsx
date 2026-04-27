@@ -24,7 +24,7 @@ const Skills: React.FC = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         {profile.skills.map((skill, index) => {
           const Icon = iconMap[skill.title] || Zap;
           return (
@@ -36,11 +36,11 @@ const Skills: React.FC = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="glass-card flex flex-col items-center text-center group"
             >
-              <div className="w-16 h-16 rounded-2xl bg-accent-soft text-accent flex items-center justify-center mb-6 group-hover:bg-accent group-hover:text-white transition-all duration-300">
-                <Icon size={32} />
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-accent-soft text-accent flex items-center justify-center mb-4 md:mb-6 group-hover:bg-accent group-hover:text-white transition-all duration-300">
+                <Icon size={24} className="md:w-8 md:h-8" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 group-hover:text-accent transition-colors">{skill.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{skill.description}</p>
+              <h3 className="text-sm md:text-xl font-semibold mb-2 md:mb-3 group-hover:text-accent transition-colors">{skill.title}</h3>
+              <p className="text-xs md:text-sm text-gray-500 leading-relaxed">{skill.description}</p>
             </motion.div>
           );
         })}
