@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1a1a1a;
+  --color-secondary: #fdfcfb;
+  --color-accent: #d4af37;
+  --color-accent-soft: rgba(212, 175, 55, 0.1);
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-[#fdfcfb] text-[#1a1a1a] antialiased;
+  }
+
+  h1, h2, h3 {
+    @apply font-serif font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  .section-title {
+    @apply text-4xl md:text-5xl mb-12 relative inline-block;
+  }
+  
+  .section-title::after {
+    content: '';
+    @apply absolute -bottom-2 left-0 w-12 h-1 bg-accent;
+  }
+  
+  .glass-card {
+    @apply bg-white/50 backdrop-blur-sm border border-gray-100 rounded-2xl p-8 transition-all duration-300 hover:shadow-xl hover:shadow-gray-200/50 hover:border-accent/20;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-accent hover:shadow-lg active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply border border-primary text-primary px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-primary hover:text-white active:scale-95;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .print-break-inside-avoid {
+    break-inside: avoid;
+  }
+}
+
+/* Custom video player styles */
+video {
+  @apply rounded-xl;
+}
