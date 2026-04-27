@@ -40,12 +40,21 @@ Pour tester ton portfolio sur ton téléphone :
 
 ### 4. Ajouter ton CV
 1. Mets ton CV en PDF dans **`public/documents/`**.
-2. Nomme-le exactement : `Fabula-Ayman-CV.pdf`.
+2. Nomme-le exactement : `FABULA.CV.pdf`.
+
+---
+
+### 🚀 5. Publier en ligne (GitHub)
+Une fois que tu as ajouté tes vidéos ou modifié ton texte :
+1. Double-clique sur : 👉 **`push-to-github.cmd`**
+2. Attends que la fenêtre se ferme.
+3. Ton site sera mis à jour automatiquement sur :
+   👉 **https://youhannamaher.github.io/fabula-portfolio/**
+   *(Attends 1-2 minutes que GitHub finisse la mise à jour)*
 
 ---
 
 ## 🛠 Personnalisation (Optionnel)
-
 Si tu veux changer tes textes, ton email ou tes expériences :
 1. Ouvre le fichier **`src/data/profile.ts`** avec un bloc-notes.
 2. Modifie les textes entre les guillemets `" "`.
@@ -54,20 +63,9 @@ Si tu veux changer tes textes, ton email ou tes expériences :
 ---
 
 ## 📄 Exporter pour l'université (Book de pratique)
-
 Le site est optimisé pour l'impression :
 1. Ouvre ton portfolio dans Chrome ou Edge.
 2. Appuie sur `Ctrl + P` (Imprimer).
 3. Choisis "Enregistrer au format PDF".
 4. Le site cachera automatiquement les boutons et le menu pour créer un document propre et professionnel.
 
----
-
-## 🌍 Déploiement (Plus tard)
-
-Quand tu seras prête à mettre le site en ligne (gratuitement sur GitHub Pages par exemple), il faudra :
-1. Créer un compte GitHub.
-2. Pousser les fichiers sur un "Repository".
-3. Utiliser une "GitHub Action" pour déployer le dossier `dist/`.
-
-*(Je peux t'aider pour cette étape quand tu le souhaites !)*

@@ -13,7 +13,7 @@ call npm run generate:videos
 
 echo.
 echo ======================================================
-echo 📱 POUR VOIR SUR TON TELEPHONE :
+echo POUR VOIR SUR TON TELEPHONE :
 echo Assure-toi que ton telephone est sur le meme reseau WiFi.
 echo Entre cette adresse dans ton navigateur mobile :
 echo http://172.20.10.4:5173
