@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Languages, GraduationCap, MapPin, User } from 'lucide-react';
 import { profile } from '../data/profile';
 
 const About: React.FC = () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { profile } from '../data/profile';
-import { ExternalLink, Layers, Wrench } from 'lucide-react';
+import { Layers, Wrench } from 'lucide-react';
 
 const Projects: React.FC = () => {
   return (
