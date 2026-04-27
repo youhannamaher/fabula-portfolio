@@ -66,7 +66,7 @@ const VideoGallery: React.FC = () => {
       </div>
 
       {filteredVideos.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
           {filteredVideos.map((video, index) => (
             <motion.div
               key={video.id}
@@ -102,13 +102,13 @@ const VideoGallery: React.FC = () => {
                 }}
               />
               
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex flex-col justify-end p-6">
-                <span className="text-xs font-bold text-accent uppercase tracking-widest mb-1">{video.category}</span>
-                <h3 className="text-white text-lg font-medium leading-tight">{video.title}</h3>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex flex-col justify-end p-3 md:p-6">
+                <span className="text-[10px] md:text-xs font-bold text-accent uppercase tracking-widest mb-1">{video.category}</span>
+                <h3 className="text-sm md:text-lg text-white font-medium leading-tight">{video.title}</h3>
                 
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white scale-90 group-hover:scale-100 transition-transform">
-                    <Play size={32} fill="currentColor" />
+                  <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white scale-90 group-hover:scale-100 transition-transform">
+                    <Play size={20} className="md:w-8 md:h-8" fill="currentColor" />
                   </div>
                 </div>
               </div>
