@@ -9,8 +9,8 @@ export const profile = {
     { name: "English", level: "C1" }
   ],
   linkedin: "https://www.linkedin.com/in/fabula-ayman-478631271/",
-  cvPath: "/documents/FABULA.CV.pdf",
-  profileImage: "/images/profile.jpg", // User will replace this
+  cvPath: "documents/FABULA.CV.pdf",
+  profileImage: "images/profile.jpg", // User will replace this
   about: "Fabula is a multilingual creative profile passionate about marketing, brand management, and multimedia storytelling. She combines creative thinking with business understanding, producing content that supports brand identity, audience engagement, and campaign communication.",
   skills: [
     { title: "Video Editing", description: "Professional assembly and pacing for various platforms." },

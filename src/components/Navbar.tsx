@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
     }`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <a href="#hero" className="flex items-center gap-3 text-xl font-serif font-bold tracking-tight text-primary">
-          <img src="/images/logo.png" alt="FA Logo" className="w-10 h-10 rounded-full object-cover border border-gray-100" />
+          <img src="images/logo.png" alt="FA Logo" className="w-10 h-10 rounded-full object-cover border border-gray-100" />
           <span>{profile.name.split(' ')[0]}<span className="text-accent">.</span></span>
         </a>
 

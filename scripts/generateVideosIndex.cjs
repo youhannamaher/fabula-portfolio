@@ -30,7 +30,7 @@ function generateIndex() {
       return {
         id: (index + 1).toString(),
         filename: file,
-        src: `/videos/${file}`,
+        src: `videos/${file}`,
         title: nameWithoutExt.replace(/[_-]/g, ' '),
         category: category,
         duration: '0:00' // Placeholder
