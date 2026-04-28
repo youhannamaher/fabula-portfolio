@@ -1,8 +1,11 @@
 import React from 'react';
-import { Mail, Link, FileText, Send, MapPin } from 'lucide-react';
+import { Mail, Link, FileText, Send, MapPin, CheckCircle } from 'lucide-react';
+import { useForm, ValidationError } from '@formspree/react';
 import { profile } from '../data/profile';
 
 const Contact: React.FC = () => {
+  const [state, handleSubmit] = useForm("xojyorop");
+
   return (
     <div className="bg-primary rounded-[3rem] p-12 md:p-20 text-white relative overflow-hidden">
       {/* Decorative patterns */}
@@ -50,37 +53,73 @@ const Contact: React.FC = () => {
         </div>
 
         <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-[2rem] p-8 md:p-10 no-print">
-          <h3 className="text-2xl font-semibold mb-8">Send a Quick Message</h3>
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-white/60">Your Name</label>
-              <input 
-                type="text" 
-                className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors"
-                placeholder="Name"
-              />
+          {state.succeeded ? (
+            <div className="py-12 text-center space-y-4">
+              <div className="flex justify-center">
+                <div className="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center text-accent">
+                  <CheckCircle size={48} />
+                </div>
+              </div>
+              <h3 className="text-3xl font-serif">Message Sent!</h3>
+              <p className="text-white/60">Thank you, Fabula will get back to you soon.</p>
+              <button 
+                onClick={() => window.location.reload()}
+                className="text-accent underline hover:text-white transition-colors pt-4"
+              >
+                Send another message
+              </button>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-white/60">Your Email</label>
-              <input 
-                type="email" 
-                className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors"
-                placeholder="email@example.com"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-white/60">Message</label>
-              <textarea 
-                rows={4}
-                className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors resize-none"
-                placeholder="How can I help you?"
-              />
-            </div>
-            <button className="w-full btn-primary !bg-accent !text-white flex items-center justify-center gap-2 group">
-              Send Message
-              <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </button>
-          </form>
+          ) : (
+            <>
+              <h3 className="text-2xl font-semibold mb-8">Send a Quick Message</h3>
+              <form className="space-y-6" onSubmit={handleSubmit}>
+                <div className="space-y-2">
+                  <label htmlFor="name" className="text-sm font-medium text-white/60">Your Name</label>
+                  <input 
+                    id="name"
+                    name="name"
+                    type="text" 
+                    required
+                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors"
+                    placeholder="Name"
+                  />
+                  <ValidationError prefix="Name" field="name" errors={state.errors} className="text-red-400 text-xs mt-1" />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-medium text-white/60">Your Email</label>
+                  <input 
+                    id="email"
+                    name="email"
+                    type="email" 
+                    required
+                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors"
+                    placeholder="email@example.com"
+                  />
+                  <ValidationError prefix="Email" field="email" errors={state.errors} className="text-red-400 text-xs mt-1" />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="message" className="text-sm font-medium text-white/60">Message</label>
+                  <textarea 
+                    id="message"
+                    name="message"
+                    required
+                    rows={4}
+                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors resize-none"
+                    placeholder="How can I help you?"
+                  />
+                  <ValidationError prefix="Message" field="message" errors={state.errors} className="text-red-400 text-xs mt-1" />
+                </div>
+                <button 
+                  type="submit" 
+                  disabled={state.submitting}
+                  className="w-full btn-primary !bg-accent !text-white flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {state.submitting ? 'Sending...' : 'Send Message'}
+                  {!state.submitting && <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+                </button>
+              </form>
+            </>
+          )}
         </div>
       </div>
       
