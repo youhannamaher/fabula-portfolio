@@ -28,30 +28,31 @@ const Hero: React.FC = () => {
           “I create visual stories that connect brands, people, and emotions through video editing, content production, and digital storytelling.”
         </p>
         
-        <div className="flex flex-wrap gap-4 no-print">
+        <div className="flex flex-wrap gap-4 items-center no-print">
           <a href="#portfolio" className="btn-primary flex items-center gap-2 group">
             View Projects
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </a>
-          <div className="flex gap-2">
-            <a 
-              href={profile.cvPath} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="btn-secondary flex items-center gap-2"
-            >
-              <FileText size={18} />
-              View CV
-            </a>
-            <a 
-              href={profile.cvPath} 
-              download="FABULA_AYMAN_CV.pdf"
-              className="px-6 py-3 rounded-full font-medium text-accent border border-accent/20 hover:bg-accent/5 transition-all flex items-center gap-2"
-            >
-              Download
-            </a>
-          </div>
-          <a href="#contact" className="px-8 py-3 rounded-full font-medium text-gray-600 hover:text-primary transition-colors">
+          
+          <a 
+            href={profile.cvPath} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="px-6 py-3 rounded-full border border-primary text-primary font-medium hover:bg-primary hover:text-white transition-all duration-300 active:scale-95 flex items-center gap-2"
+          >
+            <FileText size={18} />
+            View CV
+          </a>
+
+          <a 
+            href={profile.cvPath} 
+            download="FABULA_AYMAN_CV.pdf"
+            className="px-6 py-3 rounded-full border border-accent/30 text-accent font-medium hover:bg-accent hover:text-white transition-all duration-300 active:scale-95 flex items-center gap-2"
+          >
+            Download
+          </a>
+
+          <a href="#contact" className="px-6 py-3 rounded-full font-medium text-gray-500 hover:text-primary transition-colors">
             Contact Me
           </a>
         </div>
