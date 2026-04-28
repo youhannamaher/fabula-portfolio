@@ -86,12 +86,16 @@ const Contact: React.FC = () => {
       
       <div className="mt-20 pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8 no-print">
          <div className="flex items-center gap-6">
-            <a href={profile.cvPath} className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
+            <a 
+              href={profile.cvPath} 
+              download="FABULA_AYMAN_CV.pdf"
+              className="flex items-center gap-2 text-white/60 hover:text-white transition-colors"
+            >
               <FileText size={18} />
               <span>Download CV</span>
             </a>
          </div>
-         <p className="text-white/40 text-sm">Design tailored for Master 1 Création numérique application.</p>
+         <p className="text-white/40 text-sm">Design tailored for Master 1 Digital Creation application.</p>
       </div>
     </div>
   );

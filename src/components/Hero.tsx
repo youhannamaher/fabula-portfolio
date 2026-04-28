@@ -13,7 +13,7 @@ const Hero: React.FC = () => {
         className="max-w-3xl"
       >
         <span className="inline-block px-4 py-1.5 rounded-full bg-accent-soft text-accent text-sm font-semibold tracking-wider uppercase mb-6">
-          Portfolio de Pratique
+          Professional Portfolio
         </span>
         
         <h1 className="text-5xl md:text-8xl leading-tight mb-6 md:mb-8">
@@ -30,13 +30,27 @@ const Hero: React.FC = () => {
         
         <div className="flex flex-wrap gap-4 no-print">
           <a href="#portfolio" className="btn-primary flex items-center gap-2 group">
-            View Portfolio
+            View Projects
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </a>
-          <a href={profile.cvPath} className="btn-secondary flex items-center gap-2">
-            <FileText size={18} />
-            Download CV
-          </a>
+          <div className="flex gap-2">
+            <a 
+              href={profile.cvPath} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="btn-secondary flex items-center gap-2"
+            >
+              <FileText size={18} />
+              View CV
+            </a>
+            <a 
+              href={profile.cvPath} 
+              download="FABULA_AYMAN_CV.pdf"
+              className="px-6 py-3 rounded-full font-medium text-accent border border-accent/20 hover:bg-accent/5 transition-all flex items-center gap-2"
+            >
+              Download
+            </a>
+          </div>
           <a href="#contact" className="px-8 py-3 rounded-full font-medium text-gray-600 hover:text-primary transition-colors">
             Contact Me
           </a>

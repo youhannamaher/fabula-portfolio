@@ -5,13 +5,13 @@ export const profile = {
   location: "Cairo, Egypt",
   languages: [
     { name: "Arabic", level: "Native" },
-    { name: "French", level: "C1 Certified" },
-    { name: "English", level: "C1" }
+    { name: "English", level: "Full Professional Proficiency (C1)" },
+    { name: "French", level: "C1 Certified" }
   ],
   linkedin: "https://www.linkedin.com/in/fabula-ayman-478631271/",
   cvPath: "documents/FABULA.CV.pdf",
-  profileImage: "images/profile.jpg", // User will replace this
-  about: "Fabula is a multilingual creative profile passionate about marketing, brand management, and multimedia storytelling. She combines creative thinking with business understanding, producing content that supports brand identity, audience engagement, and campaign communication.",
+  profileImage: "images/profile.jpg",
+  about: "Fabula is a multilingual creative professional passionate about marketing, brand management, and multimedia storytelling. She combines creative thinking with business insight, producing content that strengthens brand identity, enhances audience engagement, and drives campaign communication.",
   skills: [
     { title: "Video Editing", description: "Professional assembly and pacing for various platforms." },
     { title: "Content Production", description: "End-to-end management of creative media projects." },

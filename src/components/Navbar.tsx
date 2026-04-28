@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
             className="bg-primary text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-accent transition-all duration-300 flex items-center gap-2"
           >
             <FileText size={16} />
-            CV
+            View CV
           </a>
         </div>
 
@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
             onClick={() => setIsOpen(false)}
           >
             <FileText size={20} />
-            Download CV
+            View CV
           </a>
         </div>
       )}

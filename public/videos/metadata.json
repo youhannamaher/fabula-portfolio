@@ -1,11 +1,5 @@
 [
   {
-    "filename": "introducing . william’s art existence.mov",
-    "title": "William's Art Existence",
-    "category": "Branding",
-    "order": 1
-  },
-  {
     "filename": "William’s passion.mov",
     "title": "William's Passion",
     "category": "Creative",
@@ -33,6 +27,12 @@
     "filename": "Saint john,📍 covina California.mov",
     "title": "Saint John - California",
     "category": "Travel",
+    "order": 6
+  },
+  {
+    "filename": "Introducing William’s Art.mov",
+    "title": "Introducing William’s Art",
+    "category": "General",
     "order": 6
   }
 ]

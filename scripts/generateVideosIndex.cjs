@@ -15,50 +15,58 @@ function generateIndex() {
     process.exit(1);
   }
 
-  // Load metadata if it exists
+  // 1. Load current metadata if it exists
   let metadata = [];
   if (fs.existsSync(metadataFile)) {
     try {
       metadata = JSON.parse(fs.readFileSync(metadataFile, 'utf8'));
-      console.log('Found metadata.json, using custom settings.');
     } catch (e) {
       console.error('Error parsing metadata.json:', e.message);
     }
   }
 
-  const files = fs.readdirSync(videosDir);
-  const videos = files
-    .filter(file => videoExtensions.includes(path.extname(file).toLowerCase()))
-    .map((file, index) => {
+  // 2. Scan actual files on disk
+  const filesOnDisk = fs.readdirSync(videosDir).filter(file => 
+    videoExtensions.includes(path.extname(file).toLowerCase())
+  );
+
+  // 3. Sync metadata with disk
+  // Keep only entries for files that actually exist
+  let syncedMetadata = metadata.filter(m => filesOnDisk.includes(m.filename));
+
+  // Add new files that aren't in metadata yet
+  filesOnDisk.forEach(file => {
+    if (!syncedMetadata.find(m => m.filename === file)) {
       const nameWithoutExt = path.parse(file).name;
-      
-      // Look for this file in metadata
-      const meta = metadata.find(m => m.filename === file);
-      
-      // Default logic if no metadata found
-      let category = 'General';
-      if (file.toLowerCase().includes('social')) category = 'Social Media';
-      else if (file.toLowerCase().includes('campaign')) category = 'Campaigns';
-      else if (file.toLowerCase().includes('edit')) category = 'Editing';
-      else if (file.toLowerCase().includes('brand')) category = 'Branding';
-      else if (file.toLowerCase().includes('prod')) category = 'Production';
-
-      return {
-        id: meta?.id || (index + 1).toString(),
+      syncedMetadata.push({
         filename: file,
-        src: `videos/${file}`,
-        title: meta?.title || nameWithoutExt.replace(/[_-]/g, ' '),
-        category: meta?.category || category,
-        order: meta?.order !== undefined ? meta.order : 999, // Push unordered to the end
-        duration: meta?.duration || '0:00'
-      };
-    });
+        title: nameWithoutExt.replace(/[_-]/g, ' '),
+        category: 'General',
+        order: syncedMetadata.length + 1
+      });
+    }
+  });
 
-  // Sort by order
-  videos.sort((a, b) => a.order - b.order);
+  // 4. Sort synced metadata by order to keep it clean
+  syncedMetadata.sort((a, b) => (a.order || 999) - (b.order || 999));
 
-  fs.writeFileSync(outputFile, JSON.stringify(videos, null, 2));
-  console.log(`Generated ${videos.length} video entries in ${outputFile}`);
+  // 5. Update the metadata.json file (Auto-sync)
+  fs.writeFileSync(metadataFile, JSON.stringify(syncedMetadata, null, 2));
+  console.log('Synchronized metadata.json with files on disk.');
+
+  // 6. Build the final videos.json for the app
+  const finalVideos = syncedMetadata.map((m, index) => ({
+    id: (index + 1).toString(),
+    filename: m.filename,
+    src: `videos/${m.filename}`,
+    title: m.title,
+    category: m.category,
+    order: m.order || (index + 1),
+    duration: m.duration || '0:00'
+  }));
+
+  fs.writeFileSync(outputFile, JSON.stringify(finalVideos, null, 2));
+  console.log(`Generated ${finalVideos.length} video entries in ${outputFile}`);
 }
 
 generateIndex();

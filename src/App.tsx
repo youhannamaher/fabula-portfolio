@@ -56,7 +56,7 @@ const App: React.FC = () => {
       </main>
 
       <footer className="py-12 border-t border-gray-200 text-center text-sm text-gray-500 no-print">
-        <p>© {new Date().getFullYear()} {profile.name}. Built for Master 1 Création numérique application.</p>
+        <p>© {new Date().getFullYear()} {profile.name}. Built for Master 1 Digital Creation application.</p>
       </footer>
     </div>
   );

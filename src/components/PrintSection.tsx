@@ -65,7 +65,7 @@ const PrintSection: React.FC = () => {
       </div>
 
       <div className="mt-20 pt-10 border-t border-gray-100 text-center text-[10px] text-gray-400">
-        Generated for Master 1 Création numérique, mention Arts et Technologies - Université Toulouse Jean Jaurès.
+        Generated for Master 1 Digital Creation, Arts and Technologies - University of Toulouse Jean Jaurès.
       </div>
     </div>
   );
