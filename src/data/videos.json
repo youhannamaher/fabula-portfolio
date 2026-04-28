@@ -1,50 +1,47 @@
 [
   {
-    "id": "1",
-    "filename": "introducing . william’s art existence.mov",
-    "src": "videos/introducing . william’s art existence.mov",
-    "title": "introducing . william’s art existence",
-    "category": "General",
+    "id": "5",
+    "filename": "William’s passion.mov",
+    "src": "videos/William’s passion.mov",
+    "title": "William's Passion",
+    "category": "Creative",
+    "order": 2,
     "duration": "0:00"
   },
   {
     "id": "2",
-    "filename": "Saint john,📍 covina California.mov",
-    "src": "videos/Saint john,📍 covina California.mov",
-    "title": "Saint john,📍 covina California",
-    "category": "General",
-    "duration": "0:00"
-  },
-  {
-    "id": "3",
     "filename": "Saint Mary church .📍El Rehab.part one.mov",
     "src": "videos/Saint Mary church .📍El Rehab.part one.mov",
-    "title": "Saint Mary church .📍El Rehab.part one",
-    "category": "General",
+    "title": "Saint Mary Church - Part 1",
+    "category": "Documentary",
+    "order": 3,
     "duration": "0:00"
   },
   {
     "id": "4",
-    "filename": "Saint Mary church .📍El Rehab.part three.mov",
-    "src": "videos/Saint Mary church .📍El Rehab.part three.mov",
-    "title": "Saint Mary church .📍El Rehab.part three",
-    "category": "General",
-    "duration": "0:00"
-  },
-  {
-    "id": "5",
     "filename": "Saint Mary church. 📍El Rehab.part two.mov",
     "src": "videos/Saint Mary church. 📍El Rehab.part two.mov",
-    "title": "Saint Mary church. 📍El Rehab.part two",
-    "category": "General",
+    "title": "Saint Mary Church - Part 2",
+    "category": "Documentary",
+    "order": 4,
     "duration": "0:00"
   },
   {
-    "id": "6",
-    "filename": "William’s passion.mov",
-    "src": "videos/William’s passion.mov",
-    "title": "William’s passion",
-    "category": "General",
+    "id": "3",
+    "filename": "Saint Mary church .📍El Rehab.part three.mov",
+    "src": "videos/Saint Mary church .📍El Rehab.part three.mov",
+    "title": "Saint Mary Church - Part 3",
+    "category": "Documentary",
+    "order": 5,
+    "duration": "0:00"
+  },
+  {
+    "id": "1",
+    "filename": "Saint john,📍 covina California.mov",
+    "src": "videos/Saint john,📍 covina California.mov",
+    "title": "Saint John - California",
+    "category": "Travel",
+    "order": 6,
     "duration": "0:00"
   }
 ]
