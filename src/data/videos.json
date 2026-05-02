@@ -52,5 +52,23 @@
     "category": "Travel",
     "order": 6,
     "duration": "0:00"
+  },
+  {
+    "id": "7",
+    "filename": "Greek_Museum.mov",
+    "src": "videos/Greek_Museum.mov",
+    "title": "Graeco-Roman Museum - Alexandria",
+    "category": "Documentary",
+    "order": 7,
+    "duration": "0:00"
+  },
+  {
+    "id": "8",
+    "filename": "Jewelry_Museum.mov",
+    "src": "videos/Jewelry_Museum.mov",
+    "title": "Royal Jewelry Museum - Alexandria",
+    "category": "Documentary",
+    "order": 8,
+    "duration": "0:00"
   }
 ]

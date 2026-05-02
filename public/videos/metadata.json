@@ -34,5 +34,17 @@
     "title": "Saint John - California",
     "category": "Travel",
     "order": 6
+  },
+  {
+    "filename": "Greek_Museum.mov",
+    "title": "Graeco-Roman Museum - Alexandria",
+    "category": "Documentary",
+    "order": 7
+  },
+  {
+    "filename": "Jewelry_Museum.mov",
+    "title": "Royal Jewelry Museum - Alexandria",
+    "category": "Documentary",
+    "order": 8
   }
 ]
