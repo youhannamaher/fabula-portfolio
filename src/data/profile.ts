@@ -58,7 +58,7 @@ export const profile = {
     {
       role: "Digital Content & Brand Management",
       company: "Williams Art",
-      period: "Previous",
+      period: "Current",
       description: "Instagram multimedia content management, graphic/photo/video selection, and audience growth."
     },
     {
