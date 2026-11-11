@@ -62,7 +62,7 @@ export const profile = {
       description: "Instagram multimedia content management, graphic/photo/video selection, and audience growth."
     },
     {
-      role: "Creative Marketing Intern",
+      role: "Creative  Intern",
       company: "DPM Multimedia Agency",
       period: "Internship",
       description: "Advertising scenarios, creative storytelling, and 360° marketing campaigns."
