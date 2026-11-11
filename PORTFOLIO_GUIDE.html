@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fabula Ayman — Portfolio Management & AI Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a1a1a;
+      --accent: #d4af37;
+      --accent-soft: rgba(212, 175, 55, 0.12);
+      --bg: #fdfcfb;
+      --card-bg: #ffffff;
+      --text: #2d3748;
+      --text-muted: #718096;
+      --border: #e2e8f0;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 32px 16px;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 24px;
+    }
+
+    .top-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-accent:hover {
+      background: #b5952f;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--primary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+
+    /* Workflow Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .workflow-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      position: relative;
+    }
+
+    .workflow-badge {
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+    }
+
+    .workflow-card h3 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: var(--primary);
+    }
+
+    .steps-list {
+      list-style: none;
+      counter-reset: step-counter;
+    }
+
+    .steps-list li {
+      counter-increment: step-counter;
+      position: relative;
+      padding-left: 36px;
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+
+    .steps-list li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 24px;
+      height: 24px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: bold;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    /* Direct Clickable Table */
+    .link-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .link-table th, .link-table td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .link-table th {
+      background: #fafaf9;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .link-table tr:hover td {
+      background: #fbfbf9;
+    }
+
+    /* Code Blocks */
+    .code-box {
+      background: #1e1e24;
+      color: #e2e8f0;
+      padding: 20px;
+      border-radius: 14px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      position: relative;
+      margin: 16px 0;
+      line-height: 1.5;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .copy-btn.copied {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    /* Accordion / Task cards */
+    .task-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .task-header {
+      padding: 18px 24px;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+
+    .task-header:hover {
+      background: #fafaf9;
+    }
+
+    .task-body {
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+      background: #fafaf9;
+      font-size: 14px;
+    }
+
+    .prompt-snippet {
+      background: white;
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 12px 0;
+      font-style: italic;
+      color: #4a5568;
+    }
+
+    .tip-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #1e40af;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <span class="badge">Master Handoff & AI Guide</span>
+      <h1>How to Manage Your Portfolio</h1>
+      <p class="subtitle">A complete step-by-step dashboard for Fabula Ayman to update video views, texts, projects, and work with AI assistants (Claude, ChatGPT).</p>
+
+      <div class="top-links">
+        <a href="https://youhannamaher.github.io/fabula-portfolio/" target="_blank" class="btn btn-accent">
+          🌐 View Live Website
+        </a>
+        <a href="https://github.com/youhannamaher/fabula-portfolio/actions" target="_blank" class="btn btn-primary">
+          🚀 Check Deployment Status
+        </a>
+        <a href="https://github.com/youhannamaher/fabula-portfolio" target="_blank" class="btn btn-outline">
+          📂 GitHub Repository
+        </a>
+      </div>
+    </header>
+
+    <!-- SECTION 1: THE TWO WORKFLOWS -->
+    <h2 class="section-title">⚡ How Changes Are Published</h2>
+    <div class="grid-2">
+      
+      <!-- Option 1: Browser -->
+      <div class="workflow-card">
+        <span class="workflow-badge">Recommended</span>
+        <h3>Option 1: 100% In Your Browser</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+          No code, no command line, and no terminal. You can edit files directly on GitHub from any computer.
+        </p>
+        <ol class="steps-list">
+          <li>Click the direct GitHub link for the file you want to change.</li>
+          <li>Click the <strong>Pencil icon (Edit)</strong>.</li>
+          <li>Paste the updated text provided by Claude or ChatGPT.</li>
+          <li>Click the green <strong>"Commit changes"</strong> button.</li>
+          <li>Done! GitHub Actions builds and publishes your live site in <strong>90 seconds</strong>.</li>
+        </ol>
+      </div>
+
+      <!-- Option 2: Windows Batch -->
+      <div class="workflow-card">
+        <span class="workflow-badge">Local PC</span>
+        <h3>Option 2: On Your Windows Computer</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+          If you have the portfolio folder open on your computer, use the 1-click batch files:
+        </p>
+        <ol class="steps-list">
+          <li><strong><code>open-portfolio-preview.cmd</code></strong>: Opens a live preview in your browser & on phone.</li>
+          <li><strong><code>update-videos-preview.cmd</code></strong>: Refreshes video gallery index when you add videos.</li>
+          <li><strong><code>push-to-github.cmd</code></strong>: Double-click to send all changes to GitHub and publish automatically!</li>
+        </ol>
+      </div>
+
+    </div>
+
+    <!-- SECTION 2: DIRECT CLICKABLE LINKS -->
+    <div class="card">
+      <h2 class="section-title">🔗 Direct 1-Click Links to Edit Files</h2>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">
+        Click any link below to jump directly into GitHub's editor or upload screen:
+      </p>
+
+      <table class="link-table">
+        <thead>
+          <tr>
+            <th>What You Want to Update</th>
+            <th>File Location</th>
+            <th>Action Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>👁️ Video Views, Titles & Categories</strong></td>
+            <td><code>public/videos/metadata.json</code></td>
+            <td>
+              <a href="https://github.com/youhannamaher/fabula-portfolio/edit/main/public/videos/metadata.json" target="_blank" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px;">
+                ✏️ Edit metadata.json
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>📝 Bio, Jobs, Skills & Project Links</strong></td>
+            <td><code>src/data/profile.ts</code></td>
+            <td>
+              <a href="https://github.com/youhannamaher/fabula-portfolio/edit/main/src/data/profile.ts" target="_blank" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px;">
+                ✏️ Edit profile.ts
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>🎥 Upload New Videos (.mp4, .mov)</strong></td>
+            <td><code>public/videos/</code></td>
+            <td>
+              <a href="https://github.com/youhannamaher/fabula-portfolio/upload/main/public/videos" target="_blank" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px;">
+                ⬆️ Upload Video Files
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>🖼️ Upload New Photo / Logo</strong></td>
+            <td><code>public/images/</code></td>
+            <td>
+              <a href="https://github.com/youhannamaher/fabula-portfolio/upload/main/public/images" target="_blank" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px;">
+                ⬆️ Upload Images
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>📄 Upload New CV (PDF)</strong></td>
+            <td><code>public/documents/</code></td>
+            <td>
+              <a href="https://github.com/youhannamaher/fabula-portfolio/upload/main/public/documents" target="_blank" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px;">
+                ⬆️ Upload FABULA.CV.pdf
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>🚀 Live Deployment Tracker</strong></td>
+            <td>GitHub Actions</td>
+            <td>
+              <a href="https://github.com/youhannamaher/fabula-portfolio/actions" target="_blank" class="btn btn-accent" style="padding: 6px 14px; font-size: 12px;">
+                ⏱️ Check Build Status
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 3: MASTER AI SYSTEM PROMPT -->
+    <div class="card">
+      <h2 class="section-title">🤖 Master Prompt for Claude / ChatGPT</h2>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 12px;">
+        Copy and paste this prompt whenever starting a new conversation with Claude, ChatGPT, or Gemini. It teaches the AI everything about your website:
+      </p>
+
+      <div class="code-box">
+        <button class="copy-btn" onclick="copyMasterPrompt()">📋 Copy Prompt</button>
+<pre id="master-prompt-text">You are my personal technical assistant helping me maintain and update my professional portfolio website (Fabula Ayman - Content Creator, Scriptwriter & Creative).
+
+The site is built with React 19, TypeScript, Tailwind CSS, and Vite, and is automatically deployed on GitHub Pages: https://youhannamaher.github.io/fabula-portfolio/
+
+Repository Architecture:
+1. "src/data/profile.ts":
+   - Personal info: name, title, email, location, languages, linkedin, cvPath, profileImage, about
+   - skills: list of { title, description }
+   - experience: list of { role, company, period, description }
+   - projects: list of { title, category, role, objective, tools, link, logo }
+
+2. "public/videos/metadata.json":
+   - filename: exact video filename in public/videos/
+   - title: video title displayed on the site
+   - category: e.g. "Branding", "Documentary", "Travel"
+   - project: e.g. "Williams Art", "Documentary & Travel" (the filter tabs and project sections on the website are generated AUTOMATICALLY from this field!)
+   - views: optional, e.g. "15K+ views" or "197K+ views" (omit or leave "" to hide the views badge)
+   - order: display order number (1, 2, 3...)
+
+Deployment & Workflow:
+- Any commit to the "main" branch triggers GitHub Actions to run the build (which automatically re-indexes metadata.json into videos.json) and updates the live site in 1-2 minutes.
+- On Windows locally, "push-to-github.cmd" commits and pushes changes.
+- Note: GitHub's browser file upload supports files up to 25 MB; for larger video files, add them locally and double-click "push-to-github.cmd".
+
+Rules for your responses:
+- Always provide the EXACT code snippet ready to be copy-pasted.
+- Specify the exact file path and GitHub edit link so I can paste it immediately.
+- Explain the steps simply without complex developer jargon.</pre>
+      </div>
+    </div>
+
+    <!-- SECTION 4: COMMON TASKS & TEMPLATES -->
+    <div class="card">
+      <h2 class="section-title">💡 Step-by-Step Task Guides</h2>
+
+      <!-- Task 1 -->
+      <div class="task-card">
+        <div class="task-header" onclick="toggleTask(this)">
+          <span>👁️ Task 1: Update Video View Counts</span>
+          <span>▼</span>
+        </div>
+        <div class="task-body">
+          <ol style="padding-left: 20px; margin-bottom: 12px;">
+            <li>Open the GitHub edit page: <a href="https://github.com/youhannamaher/fabula-portfolio/edit/main/public/videos/metadata.json" target="_blank"><strong>Edit metadata.json</strong></a>.</li>
+            <li>Copy the contents of the file and send it to Claude with this prompt:</li>
+          </ol>
+          <div class="prompt-snippet">
+            "Here is my metadata.json. I want to change the view count of 'William's Passion' to '50K views' and 'Graeco-Roman Museum' to '25K views'. Please give me the updated file content."
+          </div>
+          <p>3. Copy the updated JSON from Claude, paste it into the GitHub editor, and click <strong>"Commit changes"</strong>.</p>
+        </div>
+      </div>
+
+      <!-- Task 2 -->
+      <div class="task-card">
+        <div class="task-header" onclick="toggleTask(this)">
+          <span>🔗 Task 2: Add or Update Your Freelance Project Link</span>
+          <span>▼</span>
+        </div>
+        <div class="task-body">
+          <ol style="padding-left: 20px; margin-bottom: 12px;">
+            <li>Open the GitHub edit page: <a href="https://github.com/youhannamaher/fabula-portfolio/edit/main/src/data/profile.ts" target="_blank"><strong>Edit profile.ts</strong></a>.</li>
+            <li>Look for line 85 under <code>Freelance Scriptwriting Project</code>.</li>
+            <li>Replace <code>link: "https://instagram.com"</code> with your actual URL (e.g. <code>link: "https://vimeo.com/your-project"</code>).</li>
+            <li>Click <strong>"Commit changes"</strong> at the bottom.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Task 3 -->
+      <div class="task-card">
+        <div class="task-header" onclick="toggleTask(this)">
+          <span>🎥 Task 3: Add a New Video to the Portfolio</span>
+          <span>▼</span>
+        </div>
+        <div class="task-body">
+          <ol style="padding-left: 20px; margin-bottom: 12px;">
+            <li>Upload your new video (.mp4 or .mov) to <a href="https://github.com/youhannamaher/fabula-portfolio/upload/main/public/videos" target="_blank"><strong>public/videos/</strong></a> and click <strong>"Commit changes"</strong>.</li>
+            <li>Open <a href="https://github.com/youhannamaher/fabula-portfolio/edit/main/public/videos/metadata.json" target="_blank"><strong>metadata.json</strong></a>.</li>
+            <li>Ask Claude:</li>
+          </ol>
+          <div class="prompt-snippet">
+            "I uploaded a video named 'Summer_Commercial.mov'. Here is my metadata.json. Please add an entry for it with Title: 'Summer Commercial', Project: 'Williams Art', Category: 'Branding', Views: '20K views'."
+          </div>
+          <p>4. Paste the updated JSON and click <strong>"Commit changes"</strong>.</p>
+        </div>
+      </div>
+
+      <!-- Task 4 -->
+      <div class="task-card">
+        <div class="task-header" onclick="toggleTask(this)">
+          <span>💼 Task 4: Add a New Work Experience or Client</span>
+          <span>▼</span>
+        </div>
+        <div class="task-body">
+          <ol style="padding-left: 20px; margin-bottom: 12px;">
+            <li>Open <a href="https://github.com/youhannamaher/fabula-portfolio/edit/main/src/data/profile.ts" target="_blank"><strong>profile.ts</strong></a>.</li>
+            <li>Ask Claude:</li>
+          </ol>
+          <div class="prompt-snippet">
+            "Here is my profile.ts. I completed a freelance project: Role: Creative Scriptwriter, Company: Brand Name, Period: 2024, Description: [Paste short description]. Please add it to the experience array."
+          </div>
+          <p>3. Paste the code into GitHub and click <strong>"Commit changes"</strong>.</p>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        💡 <strong>Pro Tip:</strong> After clicking "Commit changes" on GitHub, visit the <a href="https://github.com/youhannamaher/fabula-portfolio/actions" target="_blank" style="font-weight: bold; color: inherit;">GitHub Actions page</a>. When the yellow running circle turns into a green checkmark, your live site has been updated!
+      </div>
+
+    </div>
+
+    <footer>
+      <p>Fabula Ayman Portfolio Management Dashboard • Built for seamless ownership transfer</p>
+    </footer>
+
+  </div>
+
+  <script>
+    function copyMasterPrompt() {
+      const text = document.getElementById('master-prompt-text').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.innerText = '✔ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerText = '📋 Copy Prompt';
+          btn.classList.remove('copied');
+        }, 2500);
+      });
+    }
+
+    function toggleTask(element) {
+      const body = element.nextElementSibling;
+      const arrow = element.querySelector('span:last-child');
+      if (body.style.display === 'none') {
+        body.style.display = 'block';
+        arrow.innerText = '▼';
+      } else {
+        body.style.display = 'none';
+        arrow.innerText = '▶';
+      }
+    }
+  </script>
+</body>
+</html>
+

@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { profile } from '../data/profile';
-import { FileText, Share2, Palette, Zap, Target, Camera, Layout } from 'lucide-react';
+import { FileText, Share2, Palette, Zap, Target, Camera, Layout, type LucideIcon } from 'lucide-react';
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   'Scriptwriting': FileText,
   'Content Production': Zap,
   'Brand Storytelling': Target,

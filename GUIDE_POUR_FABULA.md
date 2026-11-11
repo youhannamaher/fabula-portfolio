@@ -108,3 +108,4 @@ Sous Windows, les extensions comme `.jpg` ou `.png` sont parfois masquées.
 * Ta photo de profil doit être dans `public/images/profile.jpeg`.
 * Le logo de Williams Art est dans `public/images/williams-art-logo.png` (le site accepte aussi `.jpg`).
 * Ton CV doit être nommé `public/documents/FABULA.CV.pdf`.
+

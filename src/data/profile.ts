@@ -28,7 +28,7 @@ export interface Project {
 export const profile = {
   name: "Fabula Ayman",
   title: "Content Creator | Scriptwriter | Creative",
-  email: "aymanfaula@gmail.com",
+  email: "aymanfabula@gmail.com",
   location: "Cairo, Egypt",
   languages: [
     { name: "Arabic", level: "Native" },

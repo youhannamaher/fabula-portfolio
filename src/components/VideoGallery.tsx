@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Play, X, Info, Eye, ExternalLink, Layers } from 'lucide-react';
 import videosData from '../data/videos.json';
+import { profile } from '../data/profile';
 
 const InstagramIcon: React.FC<{ size?: number; className?: string }> = ({ size = 18, className = '' }) => (
   <svg
@@ -32,31 +33,86 @@ interface Video {
   duration: string;
 }
 
+const safeVideoUrl = (src: string) => {
+  try {
+    return encodeURI(decodeURI(src));
+  } catch {
+    return encodeURI(src);
+  }
+};
+
 const VideoGallery: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [activeVideo, setActiveVideo] = useState<Video | null>(null);
 
-  // Grouping / Filter tabs focused on projects & branding
-  const projectFilters = [
-    { label: 'All Projects', value: 'All' },
-    { label: 'Williams Art', value: 'Williams Art' },
-    { label: 'Alexandria Museums', value: 'Alexandria Museums' },
-    { label: 'Documentary & Travel', value: 'Documentary & Exploration' }
-  ];
+  // Build project filter tabs dynamically from videosData (synced with metadata.json)
+  const projectNames = useMemo(() => {
+    return Array.from(
+      new Set(
+        (videosData as Video[])
+          .map((v) => v.project?.trim())
+          .filter((p): p is string => Boolean(p))
+      )
+    );
+  }, []);
+
+  const projectFilters = useMemo(() => {
+    return [
+      { label: 'All Projects', value: 'All' },
+      ...projectNames.map((name) => ({ label: name, value: name })),
+    ];
+  }, [projectNames]);
+
+  // Reset filter if current selection no longer exists in metadata
+  const effectiveFilter =
+    selectedFilter === 'All' || projectNames.includes(selectedFilter)
+      ? selectedFilter
+      : 'All';
 
   const filteredVideos = useMemo(() => {
+    const q = searchTerm.trim().toLowerCase();
     return (videosData as Video[]).filter((video) => {
-      const matchesSearch = 
-        video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (video.project && video.project.toLowerCase().includes(searchTerm.toLowerCase()));
-      const matchesProject = 
-        selectedFilter === 'All' || video.project === selectedFilter;
+      const videoProject = (video.project || 'General').trim();
+      const matchesSearch =
+        !q ||
+        video.title.toLowerCase().includes(q) ||
+        videoProject.toLowerCase().includes(q) ||
+        video.category.toLowerCase().includes(q);
+      const matchesProject =
+        effectiveFilter === 'All' || videoProject === effectiveFilter;
       return matchesSearch && matchesProject;
     });
-  }, [searchTerm, selectedFilter]);
+  }, [searchTerm, effectiveFilter]);
 
-  const showWilliamsArtHeader = selectedFilter === 'Williams Art' || selectedFilter === 'All';
+  // Group filtered videos by project preserving metadata order
+  const groupedSections = useMemo(() => {
+    const map = new Map<string, Video[]>();
+    filteredVideos.forEach((video) => {
+      const key = (video.project || 'General').trim();
+      const existing = map.get(key) || [];
+      existing.push(video);
+      map.set(key, existing);
+    });
+    return Array.from(map.entries()).map(([projectName, videos]) => {
+      const matchedProfileProject = profile.projects.find(
+        (p) => p.title.trim().toLowerCase() === projectName.toLowerCase()
+      );
+      return {
+        projectName,
+        videos,
+        profileProject: matchedProfileProject,
+      };
+    });
+  }, [filteredVideos]);
+
+  const activeVideoProfile = activeVideo
+    ? profile.projects.find(
+        (p) =>
+          p.title.trim().toLowerCase() ===
+          (activeVideo.project || '').trim().toLowerCase()
+      )
+    : undefined;
 
   return (
     <div className="space-y-12">
@@ -73,7 +129,10 @@ const VideoGallery: React.FC = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 no-print">
           <div className="relative group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-accent transition-colors" size={18} />
+            <Search
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-accent transition-colors"
+              size={18}
+            />
             <input
               type="text"
               placeholder="Search by project or title..."
@@ -89,7 +148,7 @@ const VideoGallery: React.FC = () => {
                 key={tab.value}
                 onClick={() => setSelectedFilter(tab.value)}
                 className={`px-5 py-2.5 rounded-full text-xs md:text-sm font-medium whitespace-nowrap transition-all duration-300 ${
-                  selectedFilter === tab.value
+                  effectiveFilter === tab.value
                     ? 'bg-primary text-white shadow-md'
                     : 'bg-white border border-gray-200 text-gray-600 hover:border-accent hover:text-accent'
                 }`}
@@ -101,128 +160,164 @@ const VideoGallery: React.FC = () => {
         </div>
       </div>
 
-      {/* Featured Project Header: Williams Art */}
-      {showWilliamsArtHeader && selectedFilter === 'Williams Art' && (
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-stone-900 via-stone-850 to-neutral-900 rounded-3xl p-6 md:p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-white/10"
-        >
-          <div className="flex items-center gap-5">
-            <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 flex-shrink-0 flex items-center justify-center p-1.5 shadow-inner">
-              <img
-                src="images/williams-art-logo.png"
-                alt="Williams Art Logo"
-                className="w-full h-full object-contain rounded-xl"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  if (!target.src.includes('williams-art-logo.jpg')) {
-                    target.src = 'images/williams-art-logo.jpg';
-                  } else if (!target.src.includes('williams-art-logo.png.jpg')) {
-                    target.src = 'images/williams-art-logo.png.jpg';
-                  } else {
-                    target.src = 'images/logo.png';
-                  }
-                }}
-              />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-accent text-xs font-bold uppercase tracking-widest">Project 01 • Branding</span>
-              </div>
-              <h3 className="text-2xl md:text-3xl font-serif font-bold text-white mt-1">Williams Art</h3>
-              <p className="text-white/60 text-sm mt-1 max-w-lg">
-                Brand narrative, visual direction, and digital content management designed to grow audience reach and elevate brand perception.
-              </p>
-            </div>
-          </div>
+      {/* Grouped Project Sections */}
+      {groupedSections.length > 0 ? (
+        <div className="space-y-14">
+          {groupedSections.map(({ projectName, videos, profileProject }, sectionIndex) => {
+            const hasFeaturedBanner = Boolean(profileProject?.logo || profileProject?.link);
+            const isInstagram = profileProject?.link?.includes('instagram.com');
 
-          <a
-            href="https://www.instagram.com/williams_artt?rpxt=cWdtM2JheTB2YWN3&utm_source=qrand"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-shrink-0 bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-full text-sm font-medium flex items-center gap-2 transition-transform duration-300 hover:scale-105 shadow-md"
-          >
-            <InstagramIcon size={18} />
-            <span>@williams_artt</span>
-            <ExternalLink size={14} className="opacity-70" />
-          </a>
-        </motion.div>
-      )}
+            return (
+              <div key={projectName} className="space-y-6">
+                {hasFeaturedBanner ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-gradient-to-r from-stone-900 via-stone-850 to-neutral-900 rounded-3xl p-6 md:p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-white/10"
+                  >
+                    <div className="flex items-center gap-5">
+                      {profileProject?.logo && (
+                        <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 flex-shrink-0 flex items-center justify-center p-1.5 shadow-inner">
+                          <img
+                            src={profileProject.logo}
+                            alt={`${projectName} Logo`}
+                            className="w-full h-full object-contain rounded-xl"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              if (!target.src.includes('williams-art-logo.jpg')) {
+                                target.src = 'images/williams-art-logo.jpg';
+                              } else if (!target.src.includes('williams-art-logo.png.jpg')) {
+                                target.src = 'images/williams-art-logo.png.jpg';
+                              } else {
+                                target.src = 'images/logo.png';
+                              }
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-accent text-xs font-bold uppercase tracking-widest">
+                            Project {String(sectionIndex + 1).padStart(2, '0')} • {profileProject?.category || 'Branding'}
+                          </span>
+                        </div>
+                        <h3 className="text-2xl md:text-3xl font-serif font-bold text-white mt-1">
+                          {projectName}
+                        </h3>
+                        {profileProject?.objective && (
+                          <p className="text-white/60 text-sm mt-1 max-w-lg">
+                            {profileProject.objective}
+                          </p>
+                        )}
+                      </div>
+                    </div>
 
-      {/* Video Grid */}
-      {filteredVideos.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {filteredVideos.map((video, index) => (
-            <motion.div
-              key={video.id}
-              layout
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="group relative bg-[#1a1a1a] rounded-2xl overflow-hidden aspect-video shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-end"
-              onClick={() => setActiveVideo(video)}
-            >
-              {/* Fallback preview surface */}
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-900 to-[#1a1a1a]">
-                <div className="text-center opacity-20 group-hover:opacity-0 transition-opacity duration-300">
-                  <Play size={44} fill="currentColor" className="mx-auto mb-2 text-white" />
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-white">Hover to preview</span>
-                </div>
-              </div>
-
-              {/* Video Preview */}
-              <video
-                src={`${video.src}#t=0.1`}
-                preload="metadata"
-                className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500"
-                muted
-                playsInline
-                onMouseOver={(e) => {
-                  const v = e.target as HTMLVideoElement;
-                  v.play().catch(() => {});
-                }}
-                onMouseOut={(e) => {
-                  const v = e.target as HTMLVideoElement;
-                  v.pause();
-                  v.currentTime = 0.1;
-                }}
-              />
-
-              {/* View Count Badge - Top Right */}
-              {video.views && (
-                <div className="absolute top-3 right-3 z-10 bg-black/70 backdrop-blur-md border border-white/15 px-3 py-1 rounded-full flex items-center gap-1.5 text-white text-xs font-medium shadow-md">
-                  <Eye size={13} className="text-accent" />
-                  <span>{video.views}</span>
-                </div>
-              )}
-
-              {/* Project Badge - Top Left */}
-              {video.project && (
-                <div className="absolute top-3 left-3 z-10 bg-black/60 backdrop-blur-md border border-white/15 px-3 py-1 rounded-full flex items-center gap-1.5 text-white/90 text-[11px] font-medium">
-                  <Layers size={11} className="text-accent" />
-                  <span>{video.project}</span>
-                </div>
-              )}
-
-              {/* Video Overlay info */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-4 md:p-6 pointer-events-none">
-                <span className="text-[10px] md:text-xs font-bold text-accent uppercase tracking-widest mb-1">
-                  {video.category}
-                </span>
-                <h3 className="text-sm md:text-base text-white font-medium leading-snug line-clamp-2">
-                  {video.title}
-                </h3>
-
-                {/* Centered play button on hover */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white scale-90 group-hover:scale-100 transition-transform shadow-lg">
-                    <Play size={22} className="md:w-8 md:h-8 ml-1" fill="currentColor" />
+                    {profileProject?.link && (
+                      <a
+                        href={profileProject.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-shrink-0 bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-full text-sm font-medium flex items-center gap-2 transition-transform duration-300 hover:scale-105 shadow-md"
+                      >
+                        {isInstagram ? <InstagramIcon size={18} /> : <ExternalLink size={18} />}
+                        <span>{isInstagram ? '@williams_artt' : 'Visit Project'}</span>
+                        <ExternalLink size={14} className="opacity-70" />
+                      </a>
+                    )}
+                  </motion.div>
+                ) : (
+                  <div className="flex items-center justify-between border-b border-gray-200 pb-4">
+                    <div>
+                      <span className="text-accent text-xs font-bold uppercase tracking-widest">
+                        Project {String(sectionIndex + 1).padStart(2, '0')}
+                      </span>
+                      <h3 className="text-2xl md:text-3xl font-serif font-bold text-primary mt-1">
+                        {projectName}
+                      </h3>
+                    </div>
+                    <span className="text-xs font-medium text-gray-400">
+                      {videos.length} {videos.length === 1 ? 'video' : 'videos'}
+                    </span>
                   </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                  {videos.map((video, index) => (
+                    <motion.div
+                      key={video.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: index * 0.05 }}
+                      className="group relative bg-[#1a1a1a] rounded-2xl overflow-hidden aspect-video shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-end"
+                      onClick={() => setActiveVideo(video)}
+                    >
+                      {/* Fallback preview surface */}
+                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-900 to-[#1a1a1a]">
+                        <div className="text-center opacity-20 group-hover:opacity-0 transition-opacity duration-300">
+                          <Play size={44} fill="currentColor" className="mx-auto mb-2 text-white" />
+                          <span className="text-[10px] font-mono uppercase tracking-widest text-white">
+                            Hover to preview
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Video Preview */}
+                      <video
+                        src={`${safeVideoUrl(video.src)}#t=0.1`}
+                        preload="metadata"
+                        className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500"
+                        muted
+                        playsInline
+                        onMouseOver={(e) => {
+                          const v = e.target as HTMLVideoElement;
+                          v.play().catch(() => {});
+                        }}
+                        onMouseOut={(e) => {
+                          const v = e.target as HTMLVideoElement;
+                          v.pause();
+                          v.currentTime = 0.1;
+                        }}
+                      />
+
+                      {/* View Count Badge - Top Right */}
+                      {video.views && (
+                        <div className="absolute top-3 right-3 z-10 bg-black/70 backdrop-blur-md border border-white/15 px-3 py-1 rounded-full flex items-center gap-1.5 text-white text-xs font-medium shadow-md">
+                          <Eye size={13} className="text-accent" />
+                          <span>{video.views}</span>
+                        </div>
+                      )}
+
+                      {/* Project Badge - Top Left */}
+                      {video.project && (
+                        <div className="absolute top-3 left-3 z-10 bg-black/60 backdrop-blur-md border border-white/15 px-3 py-1 rounded-full flex items-center gap-1.5 text-white/90 text-[11px] font-medium">
+                          <Layers size={11} className="text-accent" />
+                          <span>{video.project}</span>
+                        </div>
+                      )}
+
+                      {/* Video Overlay info */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-4 md:p-6 pointer-events-none">
+                        <span className="text-[10px] md:text-xs font-bold text-accent uppercase tracking-widest mb-1">
+                          {video.category}
+                        </span>
+                        <h3 className="text-sm md:text-base text-white font-medium leading-snug line-clamp-2">
+                          {video.title}
+                        </h3>
+
+                        {/* Centered play button on hover */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white scale-90 group-hover:scale-100 transition-transform shadow-lg">
+                            <Play size={22} className="md:w-8 md:h-8 ml-1" fill="currentColor" />
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
               </div>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
@@ -256,7 +351,7 @@ const VideoGallery: React.FC = () => {
             <div className="w-full max-w-4xl space-y-6">
               <div className="aspect-video rounded-3xl overflow-hidden shadow-2xl bg-black border border-white/10">
                 <video
-                  src={activeVideo.src}
+                  src={safeVideoUrl(activeVideo.src)}
                   className="w-full h-full"
                   controls
                   autoPlay
@@ -286,15 +381,24 @@ const VideoGallery: React.FC = () => {
                     </div>
                   )}
 
-                  {activeVideo.project === 'Williams Art' && (
+                  {activeVideoProfile?.link && (
                     <a
-                      href="https://www.instagram.com/williams_artt?rpxt=cWdtM2JheTB2YWN3&utm_source=qrand"
+                      href={activeVideoProfile.link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bg-accent text-white px-4 py-2 rounded-full text-xs font-medium flex items-center gap-1.5 hover:bg-accent/90 transition-colors"
                     >
-                      <InstagramIcon size={14} />
-                      <span>Instagram</span>
+                      {activeVideoProfile.link.includes('instagram.com') ? (
+                        <>
+                          <InstagramIcon size={14} />
+                          <span>Instagram</span>
+                        </>
+                      ) : (
+                        <>
+                          <ExternalLink size={14} />
+                          <span>View Project</span>
+                        </>
+                      )}
                     </a>
                   )}
                 </div>

@@ -7,9 +7,15 @@ const outputFile = path.join(__dirname, '../src/data/videos.json');
 
 const videoExtensions = ['.mp4', '.webm', '.mov'];
 
+function parseJsonSafe(rawText) {
+  // Strip accidental trailing commas before ] or } from manual web edits
+  const cleaned = rawText.replace(/,\s*([\]}])/g, '$1');
+  return JSON.parse(cleaned);
+}
+
 function generateIndex() {
   console.log('Scanning videos in:', videosDir);
-  
+
   if (!fs.existsSync(videosDir)) {
     console.error('Videos directory not found!');
     process.exit(1);
@@ -19,57 +25,93 @@ function generateIndex() {
   let metadata = [];
   if (fs.existsSync(metadataFile)) {
     try {
-      metadata = JSON.parse(fs.readFileSync(metadataFile, 'utf8'));
+      const raw = fs.readFileSync(metadataFile, 'utf8');
+      metadata = parseJsonSafe(raw);
+      if (!Array.isArray(metadata)) {
+        throw new Error('metadata.json must contain a JSON array.');
+      }
     } catch (e) {
-      console.error('Error parsing metadata.json:', e.message);
+      console.error('Error parsing public/videos/metadata.json:', e.message);
+      process.exit(1);
     }
   }
 
   // 2. Scan actual files on disk
-  const filesOnDisk = fs.readdirSync(videosDir).filter(file => 
+  const filesOnDisk = fs.readdirSync(videosDir).filter((file) =>
     videoExtensions.includes(path.extname(file).toLowerCase())
   );
 
-  // 3. Sync metadata with disk
-  // Keep only entries for files that actually exist
-  let syncedMetadata = metadata.filter(m => filesOnDisk.includes(m.filename));
+  // Map NFC-normalized filenames to exact disk filenames
+  const diskByNormalized = new Map();
+  filesOnDisk.forEach((file) => {
+    diskByNormalized.set(file.normalize('NFC'), file);
+  });
 
-  // Add new files that aren't in metadata yet
-  filesOnDisk.forEach(file => {
-    if (!syncedMetadata.find(m => m.filename === file)) {
+  // 3. Sync metadata with disk
+  let metadataChanged = false;
+  let syncedMetadata = [];
+
+  metadata.forEach((m) => {
+    if (!m || !m.filename) return;
+    const exactOrNorm = filesOnDisk.includes(m.filename)
+      ? m.filename
+      : diskByNormalized.get(m.filename.normalize('NFC'));
+
+    if (exactOrNorm) {
+      if (exactOrNorm !== m.filename) metadataChanged = true;
+      syncedMetadata.push({
+        ...m,
+        filename: exactOrNorm,
+      });
+    } else {
+      console.warn(`Video file missing on disk, skipping: ${m.filename}`);
+      metadataChanged = true;
+    }
+  });
+
+  // Add new files on disk that aren't in metadata yet
+  filesOnDisk.forEach((file) => {
+    const normFile = file.normalize('NFC');
+    const exists = syncedMetadata.some(
+      (m) => m.filename === file || m.filename.normalize('NFC') === normFile
+    );
+    if (!exists) {
       const nameWithoutExt = path.parse(file).name;
       syncedMetadata.push({
         filename: file,
         title: nameWithoutExt.replace(/[_-]/g, ' '),
         category: 'Branding',
-        project: 'Other',
+        project: 'Williams Art',
         views: '',
-        order: syncedMetadata.length + 1
+        order: syncedMetadata.length + 1,
       });
+      metadataChanged = true;
     }
   });
 
-  // 4. Sort synced metadata by order to keep it clean
-  syncedMetadata.sort((a, b) => (a.order || 999) - (b.order || 999));
+  // 4. Sort synced metadata by order
+  syncedMetadata.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
 
-  // 5. Update the metadata.json file (Auto-sync)
-  fs.writeFileSync(metadataFile, JSON.stringify(syncedMetadata, null, 2));
-  console.log('Synchronized metadata.json with files on disk.');
+  // 5. Update metadata.json only when disk files changed
+  if (metadataChanged) {
+    fs.writeFileSync(metadataFile, JSON.stringify(syncedMetadata, null, 2) + '\n');
+    console.log('Synchronized metadata.json with files on disk.');
+  }
 
   // 6. Build the final videos.json for the app
   const finalVideos = syncedMetadata.map((m, index) => ({
     id: (index + 1).toString(),
     filename: m.filename,
     src: `videos/${m.filename}`,
-    title: m.title,
-    category: m.category,
-    project: m.project || 'General',
-    views: m.views || '',
-    order: m.order || (index + 1),
-    duration: m.duration || '0:00'
+    title: (m.title || path.parse(m.filename).name).trim(),
+    category: (m.category || 'Branding').trim(),
+    project: (m.project || 'General').trim(),
+    views: (m.views || '').trim(),
+    order: m.order || index + 1,
+    duration: m.duration || '0:00',
   }));
 
-  fs.writeFileSync(outputFile, JSON.stringify(finalVideos, null, 2));
+  fs.writeFileSync(outputFile, JSON.stringify(finalVideos, null, 2) + '\n');
   console.log(`Generated ${finalVideos.length} video entries in ${outputFile}`);
 }
 
