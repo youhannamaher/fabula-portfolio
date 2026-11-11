@@ -18,21 +18,21 @@
   {
     "filename": "Greek_Museum.mov",
     "title": "Graeco-Roman Museum - Alexandria",
-    "category": "Documentary",
+   "category": "Travel",
     "project": "Alexandria Museums",
     "order": 3
   },
   {
     "filename": "Jewelry_Museum.mov",
     "title": "Royal Jewelry Museum - Alexandria",
-    "category": "Documentary",
+    "category": "Travel",
     "project": "Alexandria Museums",
     "order": 4
   },
   {
     "filename": "Saint Mary church .📍El Rehab.part one.mov",
     "title": "Saint Mary Church - Part 1",
-    "category": "Documentary",
+    "category": "Branding",
      "project": "Williams Art",
     "views": "10.9K+ views",
     "order": 5
@@ -40,7 +40,7 @@
   {
     "filename": "Saint Mary church. 📍El Rehab.part two.mov",
     "title": "Saint Mary Church - Part 2",
-    "category": "Documentary",
+    "category": "Branding",
      "project": "Williams Art",
     "views": "64.5K+ views",
     "order": 6
@@ -48,7 +48,7 @@
   {
     "filename": "Saint Mary church .📍El Rehab.part three.mov",
     "title": "Saint Mary Church - Part 3",
-    "category": "Documentary",
+    "category": "Branding",
      "project": "Williams Art",
     "views": "79K+ views",
     "order": 7
