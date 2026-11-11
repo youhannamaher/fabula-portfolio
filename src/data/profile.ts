@@ -63,8 +63,8 @@ export const profile = {
     },
     {
       role: "Creative  Intern",
-      company: "DPM Multimedia Agency",
-      period: "Internship",
+      company: "DPM Multimedia Agency / Internship",
+      period: "Previous",
       description: "Advertising scenarios, creative storytelling, and 360° marketing campaigns."
     }
   ],
